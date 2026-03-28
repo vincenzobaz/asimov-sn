@@ -1,15 +1,18 @@
 package asimovsn
+import java.nio.file.Path
 import scala.jdk.StreamConverters._
 
-
-case class Rule(directory: String, sentinel: String)
+case class Rule(directory: String, sentinel: Option[String]):
+  def matches(p: Path): Boolean =
+    sentinel match
+      case Some(sent) => p.endsWith(sent)
+      case None       => p.getFileName().toString == directory
 
 object Rules:
   def parse(raw: String): List[Rule] =
-    raw.lines().map(l => l.split(" ")).map(l => Rule(l(0), l(1))).toScala(List)
+    raw.lines().map(l => l.split(" ")).map(l => Rule(l(0), Some(l(1)))).toScala(List)
 
-
-  val default = List(
+  val default: List[Rule] = List(
     (".build", "Package.swift"), // Swift
     (".gradle", "build.gradle"), // Gradle
     (".gradle", "build.gradle.kts"), // Gradle Kotlin Script
@@ -46,4 +49,6 @@ object Rules:
     (".terraform.d", ".terraformrc"), // Terraform plugin cache
     (".terragrunt-cache", "terragrunt.hcl"), // Terragrunt
     ("cdk.out", "cdk.json") // AWS CDK
-  ).map((d, r) => Rule(d, r))
+  ).map((d, r) => Rule(d, Some(r))) ++ List(
+    Rule(".vscode", None)
+  )
