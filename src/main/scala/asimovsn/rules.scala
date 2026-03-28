@@ -10,7 +10,11 @@ case class Rule(directory: String, sentinel: Option[String]):
 
 object Rules:
   def parse(raw: String): List[Rule] =
-    raw.lines().map(l => l.split(" ")).map(l => Rule(l(0), Some(l(1)))).toScala(List)
+    raw
+      .lines()
+      .map(l => l.split(" "))
+      .map(l => Rule(l(0), Some(l(1))))
+      .toScala(List)
 
   val default: List[Rule] = List(
     (".build", "Package.swift"), // Swift
