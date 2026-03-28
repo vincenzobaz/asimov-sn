@@ -20,14 +20,11 @@ object AsimovSN:
     val files = os.walk.stream(config.basePath).map(_.toNIO)
 
     val occurrences = files
-      .map(p => config.rules.find(_.matches(p)).map(r => (p, r)))
-      .filter(_.nonEmpty)
-      .map(_.get)
+      .flatMap(p => config.rules.map(_.matches(p)))
+      .collect { case Some(r) => r }
 
     println("finding all folders to exclude")
-    val exclusions = occurrences
-      .map((sentinelPath, tup) => sentinelPath.getParent.resolve(tup._1))
-      .toList
+    val exclusions = occurrences.toList
 
     println("simplifying paths")
     val simplified =
