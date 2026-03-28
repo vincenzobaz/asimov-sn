@@ -28,10 +28,10 @@ object AsimovSN:
     val exclusions = occurrences
       .map((sentinelPath, tup) => sentinelPath.getParent.resolve(tup._1))
       .toList
-      .sortBy(p => os.Path(p).segmentCount)
 
     println("simplifying paths")
-    val simplified = simplify(Nil, exclusions)
+    val simplified =
+      simplify(Nil, exclusions.sortBy(p => os.Path(p).segmentCount))
 
     println("executing")
     val commands = simplified.map(command)
