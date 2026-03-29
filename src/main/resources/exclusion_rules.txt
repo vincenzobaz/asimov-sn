@@ -1,37 +1,39 @@
-SENT,.build, Package.swift # Swift
-SENT,.gradle, build.gradle # Gradle
-SENT,.gradle, build.gradle.kts # Gradle Kotlin Script
-SENT,build, build.gradle # Gradle build files
-SENT,build, build.gradle.kts # Gradle Kotlin Script build files
-SENT,.dart_tool, pubspec.yaml # Flutter (Dart)
-SENT,.packages, pubspec.yaml # Pub (Dart)
-SENT,.stack-work, stack.yaml # Stack (Haskell)
-SENT,.tox, tox.ini # Tox (Python)
-SENT,.nox, noxfile.py # Nox (Python)
-SENT,.vagrant, Vagrantfile # Vagrant
-SENT,.venv, requirements.txt # virtualenv (Python)
-SENT,.venv, pyproject.toml # virtualenv (Python)
-SENT,Carthage, Cartfile # Carthage
-SENT,Pods, Podfile # CocoaPods
-SENT,bower_components, bower.json # Bower (JavaScript)
-SENT,build, build.gradle # Gradle
-SENT,build, build.gradle.kts # Gradle Kotlin Script
-SENT,build, pubspec.yaml # Flutter (Dart)
-SENT,build, setup.py # Python
-SENT,dist, setup.py # PyPI Publishing (Python)
-SENT,node_modules, package.json # npm, Yarn (NodeJS)
-SENT,.parcel-cache, package.json # Parcel v2 cache (JavaScript)
-SENT,target, Cargo.toml # Cargo (Rust)
-SENT,target, pom.xml # Maven
-SENT,target, build.sbt # Sbt (Scala)
-SENT,target, plugins.sbt # Sbt plugins (Scala)
-SENT,vendor, composer.json # Composer (PHP)
-SENT,vendor, Gemfile # Bundler (Ruby)
-SENT,vendor, go.mod # Go Modules (Golang)
-SENT,venv, requirements.txt # virtualenv (Python)
-SENT,deps, mix.exs # Mix dependencies (Elixir)
-SENT,.build, mix.exs # Mix build files (Elixir)
-SENT,.terraform.d, .terraformrc # Terraform plugin cache
-SENT,.terragrunt-cache, terragrunt.hcl # Terragrunt
-SENT,cdk.out, cdk.json) # AWS CDK
-SIMP,.vscode
+#     Comment                                                                                   
+SENT  .build             Package.swift     #  Swift                                             
+SENT  .gradle            build.gradle      #  Gradle                                            
+SENT  .gradle            build.gradle.kts  #  Gradle      Kotlin        Script                  
+SENT  build              build.gradle      #  Gradle      build         files                   
+SENT  build              build.gradle.kts  #  Gradle      Kotlin        Script    build         files
+SENT  .dart_tool         pubspec.yaml      #  Flutter     (Dart)                                
+SENT  .packages          pubspec.yaml      #  Pub         (Dart)                                
+SENT  .stack-work        stack.yaml        #  Stack       (Haskell)                             
+SENT  .tox               tox.ini           #  Tox         (Python)                              
+SENT  .nox               noxfile.py        #  Nox         (Python)                              
+SENT  .vagrant           Vagrantfile       #  Vagrant                                           
+SENT  .venv              requirements.txt  #  virtualenv  (Python)                              
+SENT  .venv              pyproject.toml    #  virtualenv  (Python)                              
+SENT  Carthage           Cartfile          #  Carthage                                          
+SENT  Pods               Podfile           #  CocoaPods                                         
+SENT  bower_components   bower.json        #  Bower       (JavaScript)                          
+SENT  build              build.gradle      #  Gradle                                            
+SENT  build              build.gradle.kts  #  Gradle      Kotlin        Script                  
+SENT  build              pubspec.yaml      #  Flutter     (Dart)                                
+SENT  build              setup.py          #  Python                                            
+SENT  dist               setup.py          #  PyPI        Publishing    (Python)                
+SENT  node_modules       package.json      #  npm         Yarn          (NodeJS)                
+SENT  .parcel-cache      package.json      #  Parcel      v2            cache     (JavaScript)  
+SENT  target             Cargo.toml        #  Cargo       (Rust)                                
+SENT  target             pom.xml           #  Maven                                             
+SENT  target             build.sbt         #  Sbt         (Scala)                               
+SENT  target             plugins.sbt       #  Sbt         plugins       (Scala)                 
+SENT  vendor             composer.json     #  Composer    (PHP)                                 
+SENT  vendor             Gemfile           #  Bundler     (Ruby)                                
+SENT  vendor             go.mod            #  Go          Modules       (Golang)                
+SENT  venv               requirements.txt  #  virtualenv  (Python)                              
+SENT  deps               mix.exs           #  Mix         dependencies  (Elixir)                
+SENT  .build             mix.exs           #  Mix         build         files     (Elixir)      
+SENT  .terraform.d       .terraformrc      #  Terraform   plugin        cache                   
+SENT  .terragrunt-cache  terragrunt.hcl    #  Terragrunt                                        
+SENT  cdk.out            cdk.json)         #  AWS         CDK                                   
+SIMP  .vscode                                                                                   
+FULL  /home/test/Downloads                                                                               
