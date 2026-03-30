@@ -65,4 +65,4 @@ object Rules:
     parse(input, p => parser.file(using p)) match
       case Parsed.Success(records, _) => records.toList
       case f: Parsed.Failure          =>
-        throw new Exception(s"Parse Error: ${f.trace().aggregateMsg}")
+        throw Exception(s"Parse Error: ${f.trace().aggregateMsg}")
