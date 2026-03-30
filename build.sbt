@@ -18,7 +18,7 @@ lazy val asimovsn =
     .in(file("."))
     .settings(commonSetings)
 
-val release = taskKey[File]("Builds the binary in Release Full mode")
+val buildBinary = taskKey[File]("Builds the binary in Release Full mode")
 lazy val asimovsnAppleSilicon =
   project
     .in(file("target/appleSilicon"))
@@ -27,11 +27,23 @@ lazy val asimovsnAppleSilicon =
     .settings(
       name := "asimovsn-apple-silicon",
       Compile / unmanagedSourceDirectories := (asimovsn / Compile / unmanagedSourceDirectories).value,
-      release := (Compile / nativeLinkReleaseFull).value,
+      buildBinary := (Compile / nativeLinkReleaseFull).value,
       nativeConfig ~= { c =>
         c.withLTO(LTO.none) // thin
           .withMode(Mode.debug) // releaseFast
           .withGC(GC.immix) // commix
           .withTargetTriple("arm64-apple-darwin25.4.0")
+      },
+      publish := {
+        import scala.sys.process._
+        val v = version.value
+        val log = streams.value.log
+        val binary = (Compile / nativeLinkReleaseFull).value.toString
+
+        log.info(s"Releasing v$v to GitHub...")
+
+        val exitCode =
+          Seq("gh", "release", "create", s"v$v", binary, "--generate-notes").!
+        if (exitCode != 0) sys.error("GitHub release failed!")
       }
     )
