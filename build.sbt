@@ -22,7 +22,7 @@ val buildBinary = taskKey[File]("Builds the binary in Release Full mode")
 lazy val asimovsnAppleSilicon =
   project
     .in(file("target/appleSilicon"))
-    .enablePlugins(ScalaNativePlugin)
+    .enablePlugins(ScalaNativePlugin, ReleasePlugin)
     .settings(commonSetings)
     .settings(
       name := "asimovsn-apple-silicon",
