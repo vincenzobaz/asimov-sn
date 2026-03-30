@@ -34,6 +34,7 @@ lazy val asimovsnAppleSilicon =
           .withGC(GC.immix) // commix
           .withTargetTriple("arm64-apple-darwin25.4.0")
       },
+      publishMavenStyle := false,
       publish := {
         import scala.sys.process._
         val v = version.value
