@@ -5,6 +5,7 @@ import scala.scalanative.build._
 lazy val commonSetings = Seq(
   scalaVersion := scalaV,
   logLevel := Level.Info,
+  publish / skip := true,
   libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "os-lib" % "0.11.7",
     "com.github.scopt" %%% "scopt" % "4.1.0",
