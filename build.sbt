@@ -49,3 +49,6 @@ lazy val asimovsnAppleSilicon =
         if (exitCode != 0) sys.error("GitHub release failed!")
       }
     )
+
+publish / skip := true
+publishArtifact := false
