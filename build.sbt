@@ -5,29 +5,35 @@ import scala.scalanative.build._
 lazy val commonSetings = Seq(
   scalaVersion := scalaV,
   logLevel := Level.Info,
-  publish / skip := true,
   libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "os-lib" % "0.11.7",
     "com.github.scopt" %%% "scopt" % "4.1.0",
     "com.lihaoyi" %%% "fastparse" % "3.1.1",
     "org.scalameta" %% "munit" % "1.0.4" % Test
-  )
+  ),
+  // Disable publishing
+  publish / skip := true,
+  publishArtifact := false,
+  Compile / packageBin / publishArtifact := false,
+  Compile / packageDoc / publishArtifact := false,
+  Compile / packageSrc / publishArtifact := false
 )
 
-lazy val asimovsn =
+// Core project, develop using jdk
+lazy val asimov =
   project
     .in(file("."))
     .settings(commonSetings)
 
 val buildBinary = taskKey[File]("Builds the binary in Release Full mode")
-lazy val asimovsnAppleSilicon =
+lazy val native =
   project
-    .in(file("target/appleSilicon"))
+    .in(file("target/native"))
     .enablePlugins(ScalaNativePlugin, ReleasePlugin)
     .settings(commonSetings)
     .settings(
       name := "asimovsn-apple-silicon",
-      Compile / unmanagedSourceDirectories := (asimovsn / Compile / unmanagedSourceDirectories).value,
+      Compile / unmanagedSourceDirectories := (asimov / Compile / unmanagedSourceDirectories).value,
       buildBinary := (Compile / nativeLinkReleaseFull).value,
       nativeConfig ~= { c =>
         c.withLTO(LTO.none) // thin
@@ -37,6 +43,7 @@ lazy val asimovsnAppleSilicon =
       },
       publishMavenStyle := false,
       publish := {
+        // override publish to push to Github release
         import scala.sys.process._
         val v = version.value
         val log = streams.value.log
@@ -50,5 +57,9 @@ lazy val asimovsnAppleSilicon =
       }
     )
 
+// Disable root publishing
 publish / skip := true
 publishArtifact := false
+Compile / packageBin / publishArtifact := false
+Compile / packageDoc / publishArtifact := false
+Compile / packageSrc / publishArtifact := false
