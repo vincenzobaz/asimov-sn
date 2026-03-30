@@ -6,7 +6,7 @@ class RuleParserTest extends munit.FunSuite:
 
   // Helper to run the parser and return the result for assertions
   def parse(input: String): Seq[Rule] =
-    fastparse.parse(input, p => Rules.file(using p)) match {
+    fastparse.parse(input, p => Rules.parser.file(using p)) match {
       case Parsed.Success(value, _) => value
       case f: Parsed.Failure        =>
         fail(s"Parsing failed at index ${f.index}: ${f.trace().aggregateMsg}")
