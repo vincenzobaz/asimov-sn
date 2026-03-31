@@ -36,6 +36,7 @@ lazy val native =
           .withTargetTriple("arm64-apple-darwin25.4.0")
       },
       publishMavenStyle := false,
+      publishTo := Some(Resolver.file("dummy", target.value / "out")),
       publish := {
         // override publish to push to Github release
         import scala.sys.process._
@@ -54,6 +55,7 @@ lazy val native =
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
+ThisBuild / versionScheme := Some("early-semver")
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
