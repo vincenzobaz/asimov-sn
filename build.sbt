@@ -1,6 +1,7 @@
 lazy val scalaV = "3.3.6" // A Long Term Support version.
 
 import scala.scalanative.build._
+import scala.sys.process._
 
 lazy val commonSetings = Seq(
   scalaVersion := scalaV,
@@ -20,6 +21,7 @@ lazy val asimov =
     .settings(commonSetings)
 
 val buildBinary = taskKey[File]("Builds the binary in Release Full mode")
+val githubRelease = taskKey[Unit]("Creates or updates the GitHub release for the native binary")
 lazy val native =
   project
     .in(file("target/native"))
@@ -37,19 +39,39 @@ lazy val native =
       },
       publishMavenStyle := false,
       publishTo := Some(Resolver.file("dummy", target.value / "out")),
-      publish := {
-        // override publish to push to Github release
-        import scala.sys.process._
+      githubRelease := {
         val v = version.value
+        val tag = s"v$v"
         val log = streams.value.log
-        val binary = (Compile / nativeLinkReleaseFull).value.toString
+        val binary = buildBinary.value
+        val asset = target.value / s"asimov-$v"
 
-        log.info(s"Releasing v$v to GitHub...")
+        if (!binary.exists()) sys.error(s"Native binary not found: ${binary.getAbsolutePath}")
 
-        val exitCode =
-          Seq("gh", "release", "create", s"v$v", binary, "--generate-notes").!
-        if (exitCode != 0) sys.error("GitHub release failed!")
-      }
+        IO.copyFile(binary, asset)
+
+        def runOrFail(cmd: Seq[String], errorMessage: String): Unit = {
+          log.info(cmd.mkString(" "))
+          val exitCode = cmd.!
+          if (exitCode != 0) sys.error(errorMessage)
+        }
+
+        val releaseExists =
+          Seq("gh", "release", "view", tag).!(ProcessLogger(_ => (), _ => ())) == 0
+
+        if (releaseExists) {
+          runOrFail(
+            Seq("gh", "release", "upload", tag, asset.getAbsolutePath, "--clobber"),
+            s"GitHub release upload failed for $tag"
+          )
+        } else {
+          runOrFail(
+            Seq("gh", "release", "create", tag, asset.getAbsolutePath, "--generate-notes", "--title", tag),
+            s"GitHub release creation failed for $tag"
+          )
+        }
+      },
+      publish := githubRelease.value
     )
 
 import sbtrelease.ReleasePlugin.autoImport._
@@ -65,7 +87,8 @@ releaseProcess := Seq[ReleaseStep](
   commitReleaseVersion,
   tagRelease,
   pushChanges,
-  releaseStepCommandAndRemaining("native/publish"), 
+  releaseStepTask(native / publish),
   setNextVersion,
-  commitNextVersion
+  commitNextVersion,
+  pushChanges
 )
