@@ -10,13 +10,7 @@ lazy val commonSetings = Seq(
     "com.github.scopt" %%% "scopt" % "4.1.0",
     "com.lihaoyi" %%% "fastparse" % "3.1.1",
     "org.scalameta" %% "munit" % "1.0.4" % Test
-  ),
-  // Disable publishing
-  publish / skip := true,
-  publishArtifact := false,
-  Compile / packageBin / publishArtifact := false,
-  Compile / packageDoc / publishArtifact := false,
-  Compile / packageSrc / publishArtifact := false
+  )
 )
 
 // Core project, develop using jdk
@@ -57,9 +51,19 @@ lazy val native =
       }
     )
 
-// Disable root publishing
-publish / skip := true
-publishArtifact := false
-Compile / packageBin / publishArtifact := false
-Compile / packageDoc / publishArtifact := false
-Compile / packageSrc / publishArtifact := false
+import sbtrelease.ReleasePlugin.autoImport._
+import sbtrelease.ReleaseStateTransformations._
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommandAndRemaining("native/publish"), 
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
+)
