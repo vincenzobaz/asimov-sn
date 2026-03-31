@@ -64,8 +64,8 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
+  pushChanges,
   releaseStepCommandAndRemaining("native/publish"), 
   setNextVersion,
-  commitNextVersion,
-  pushChanges
+  commitNextVersion
 )
