@@ -18,11 +18,11 @@ object TmUtil:
     println(s"obtained current exclusions from ${res.command.mkString(" ")}")
     exclusions.map(e => Path.of(e))
 
-  def addExclusionCommand(p: Path): String =
-    s"tmutil addexclusion ${p.toAbsolutePath().toString()}"
+  def addExclusionCommand(p: Path): os.Shellable =
+    List("tmutil", "addexclusion", p.toAbsolutePath().toString())
 
-  def removeExclusionCommand(p: Path): String =
-    s"tmutil removeexclusion ${p.toAbsolutePath().toString()}"
+  def removeExclusionCommand(p: Path): os.Shellable =
+    List("tmutil", "removeexclusion", p.toAbsolutePath().toString())
 
   def applyExclusions(exclusions: List[Path], dryRun: Boolean = true) =
     // Get exclusions already applied by system
