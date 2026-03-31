@@ -25,6 +25,8 @@ asimov-sn -r rules.txt -b ~/projects
 
 You can start with [this file](https://github.com/vincenzobaz/asimov-sn/blob/main/src/main/resources/exclusion_rules.txt)
 
+More info on `asimov-sn --help`
+
 # Rules
 
 The possible formats for rules are:
@@ -32,3 +34,4 @@ The possible formats for rules are:
  1. Sentinel: if a directory contains `pyproject.toml`, exclude `.venv`. Syntax: `SENT <directory-to-ignore> <sentinel-file>`
  2. Directory name: exclude all directories with a given name. Syntax: `SIMP <directory name>`
  3. Full path: exclude a specific absolute path. Syntax `FULL <absolute path>`
+
