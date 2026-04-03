@@ -17,7 +17,7 @@ object AsimovSN:
 
   def algorithm(config: Config) =
     println("starting")
-    val files = os.walk(config.basePath).map(_.toNIO)
+    val files = os.walk.stream(config.basePath).map(_.toNIO)
 
     val occurrences = files
       .map(p => config.rules.find(_.matches(p)).map(r => (p, r)))
