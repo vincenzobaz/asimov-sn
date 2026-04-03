@@ -34,5 +34,16 @@ object AsimovSN:
     Config.parse(args) match
       case None         => println("failed to parse")
       case Some(config) =>
+        println(s"parsed config: $config")
         TmUtil.getSystemExclusions()
-        // createExclusions(config)
+        val exclusions = createExclusionList(config)
+
+        (config.output, config.dryRun) match
+          case (Output.Restic, _) =>
+            val target = os.pwd / "exclusions.txt"
+            os.write(target, exclusions.mkString("\n"))
+            println(s"wrote exclusions to $target")
+          case (Output.TimeMachine, true) =>
+            exclusions.map(TmUtil.addExclusionCommand).foreach(println)
+          case (Output.TimeMachine, false) =>
+            throw Exception("not yet")

@@ -53,5 +53,5 @@ object TmUtil:
     println(s"obtained current exclusions from ${res.command.mkString(" ")}")
     exclusions
 
-  def addExclusion(p: Path) =
+  def addExclusionCommand(p: Path) =
     s"tmutil addexclusion ${p.toAbsolutePath().toString()}"
