@@ -12,7 +12,8 @@ lazy val commonSetings = Seq(
   },
   libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "os-lib" % "0.11.7",
-    "com.github.scopt" %%% "scopt" % "4.1.0"
+    "com.github.scopt" %%% "scopt" % "4.1.0",
+    "com.lihaoyi" %%% "fastparse" % "3.1.1"
   )
 )
 
