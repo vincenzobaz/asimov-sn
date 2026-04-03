@@ -12,11 +12,8 @@ object AsimovSN:
         if acc.exists(p => l.startsWith(p)) then simplify(acc, t)
         else simplify(l :: acc, t)
 
-  def command(p: Path) =
-    s"tmutil addexclusion ${p.toAbsolutePath().toString()}"
-
-  def algorithm(config: Config) =
-    println("starting")
+  def createExclusionList(config: Config) =
+    println("starting exclusion search")
     val files = os.walk.stream(config.basePath).map(_.toNIO)
 
     val occurrences = files
@@ -30,16 +27,12 @@ object AsimovSN:
     val simplified =
       simplify(Nil, exclusions.sortBy(p => os.Path(p).segmentCount))
 
-    println("executing")
-    val commands = simplified.map(command)
-
-    commands.foreach { cmdString =>
-      if config.dryRun then println(cmdString)
-      else os.call(cmdString)
-    }
-    println("done")
+    println("done with exclusion search")
+    simplified
 
   def main(args: Array[String]): Unit =
     Config.parse(args) match
       case None         => println("failed to parse")
-      case Some(config) => algorithm(config)
+      case Some(config) =>
+        TmUtil.getSystemExclusions()
+        // createExclusions(config)
