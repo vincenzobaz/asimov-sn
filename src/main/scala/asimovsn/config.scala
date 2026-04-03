@@ -41,5 +41,5 @@ case class Config(
       os.read(os.pwd / "src" / "main" / "resources" / "exclusion_rules.txt")
     ),
     basePath: os.Path = os.home / "Desktop",
-    output: Output = Output.Restic
+    output: Output = Output.TimeMachine
 )
