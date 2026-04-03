@@ -12,8 +12,12 @@ object Rules:
   def parse(raw: String): List[Rule] =
     raw
       .lines()
-      .map(l => l.split(" "))
-      .map(l => Rule(l(0), Some(l(1))))
+      .map(l => l.split(" ").toList)
+      .map {
+        case d :: Nil      => Rule(d, None)
+        case d :: s :: Nil => Rule(d, Some(s))
+        case s             => throw Exception(s"Invalid line $s")
+      }
       .toScala(List)
 
   val default: List[Rule] = List(
