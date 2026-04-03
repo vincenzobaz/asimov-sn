@@ -62,5 +62,5 @@ class RuleParserTest extends munit.FunSuite:
       os.read(os.pwd / "src" / "main" / "resources" / "exclusion_rules.txt")
     )
     println(rules)
-    assertEquals(rules.length, 37)
+    assertEquals(rules.length, 38)
   }
