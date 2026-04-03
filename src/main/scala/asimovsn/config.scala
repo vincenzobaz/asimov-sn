@@ -4,26 +4,6 @@ import java.nio.file.Path
 import scopt.OParser
 import scopt.Read
 
-enum Output:
-  case Restic
-  case TimeMachine
-
-object Output:
-  given Read[Output] = Read.reads {
-    case "restic"      => Output.Restic
-    case "timemachine" => Output.TimeMachine
-    case x @ _         => throw Exception(s"invalid output type $x")
-  }
-
-case class Config(
-    dryRun: Boolean = true,
-    rules: List[Rule] = Rules.process(
-      os.read(os.pwd / "src" / "main" / "resources" / "exclusion_rules.txt")
-    ),
-    basePath: os.Path = os.home / "Desktop",
-    output: Output = Output.Restic
-)
-
 object Config:
   def parse(args: Array[String]) =
     val builder = OParser.builder[Config]
@@ -43,3 +23,23 @@ object Config:
       )
     }
     OParser.parse(parser, args, Config())
+
+enum Output:
+  case Restic
+  case TimeMachine
+
+object Output:
+  given Read[Output] = Read.reads {
+    case "restic"      => Output.Restic
+    case "timemachine" => Output.TimeMachine
+    case x @ _         => throw Exception(s"invalid output type $x")
+  }
+
+case class Config(
+    dryRun: Boolean = true,
+    rules: List[Rule] = Rules.process(
+      os.read(os.pwd / "src" / "main" / "resources" / "exclusion_rules.txt")
+    ),
+    basePath: os.Path = os.home / "Desktop",
+    output: Output = Output.Restic
+)

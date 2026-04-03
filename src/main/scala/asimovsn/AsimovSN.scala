@@ -12,7 +12,7 @@ object AsimovSN:
         if acc.exists(p => l.startsWith(p)) then simplify(acc, t)
         else simplify(l :: acc, t)
 
-  def createExclusionList(config: Config) =
+  def createExclusionList(config: Config): List[Path] =
     println("starting exclusion search")
     val files = os.walk.stream(config.basePath).map(_.toNIO)
 
@@ -38,12 +38,10 @@ object AsimovSN:
         TmUtil.getSystemExclusions()
         val exclusions = createExclusionList(config)
 
-        (config.output, config.dryRun) match
-          case (Output.Restic, _) =>
+        config.output match
+          case Output.Restic =>
             val target = os.pwd / "exclusions.txt"
             os.write(target, exclusions.mkString("\n"))
             println(s"wrote exclusions to $target")
-          case (Output.TimeMachine, true) =>
-            exclusions.map(TmUtil.addExclusionCommand).foreach(println)
-          case (Output.TimeMachine, false) =>
-            throw Exception("not yet")
+          case Output.TimeMachine =>
+            TmUtil.applyExclusions(exclusions, dryRun = config.dryRun)

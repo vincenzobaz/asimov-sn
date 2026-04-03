@@ -61,7 +61,7 @@ object Rules:
     def file(using Ctx) = P(anyLine.rep ~ End).map(_.flatten)
   }
 
-  def process(input: String) =
+  def process(input: String): List[Rule] =
     parse(input, p => parser.file(using p)) match
       case Parsed.Success(records, _) => records.toList
       case f: Parsed.Failure          =>

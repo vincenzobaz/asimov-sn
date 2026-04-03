@@ -4,6 +4,39 @@ import java.nio.file.Path
 import fastparse._, NoWhitespace._
 
 object TmUtil:
+  def getSystemExclusions(): List[Path] =
+    val res: os.CommandResult = os.call(cmd =
+      (
+        "defaults",
+        "read",
+        "/Library/Preferences/com.apple.TimeMachine",
+        "SkipPaths"
+      )
+    )
+    assert(res.exitCode == 0)
+    val exclusions = parser.parseOutput(res.out.text())
+    println(s"obtained current exclusions from ${res.command.mkString(" ")}")
+    exclusions.map(e => Path.of(e))
+
+  def addExclusionCommand(p: Path): String =
+    s"tmutil addexclusion ${p.toAbsolutePath().toString()}"
+
+  def removeExclusionCommand(p: Path): String =
+    s"tmutil removeexclusion ${p.toAbsolutePath().toString()}"
+
+  def applyExclusions(exclusions: List[Path], dryRun: Boolean = true) =
+    // Get exclusions already applied by system
+    val fromSystem = getSystemExclusions()
+
+    // Remove paths that are already excluded
+    val newExclusions = exclusions.filter(candidate => fromSystem.exists(current => candidate.startsWith(current)))
+
+    newExclusions.foreach { p =>
+      val command = addExclusionCommand(p)
+      println(s"running: $command")
+      if !dryRun then os.call(command)
+    }
+
   private[asimovsn] object parser:
     type Ctx = P[?]
 
@@ -38,20 +71,3 @@ object TmUtil:
       }
     }
   end parser
-
-  def getSystemExclusions() =
-    val res: os.CommandResult = os.call(cmd =
-      (
-        "defaults",
-        "read",
-        "/Library/Preferences/com.apple.TimeMachine",
-        "SkipPaths"
-      )
-    )
-    assert(res.exitCode == 0)
-    val exclusions = parser.parseOutput(res.out.text())
-    println(s"obtained current exclusions from ${res.command.mkString(" ")}")
-    exclusions
-
-  def addExclusionCommand(p: Path) =
-    s"tmutil addexclusion ${p.toAbsolutePath().toString()}"
