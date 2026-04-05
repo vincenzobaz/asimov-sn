@@ -11,7 +11,9 @@ object Config:
       import builder._
       OParser.sequence(
         programName("asimov-sn"),
-        opt[Boolean]('d', "dry-run").text("print exclusions without applying"),
+        opt[Unit]('d', "dry-run")
+          .action((_, c) => c.copy(dryRun = true))
+          .text("print exclusions without applying"),
         opt[Path]('r', "--rules")
           .text("List of rules")
           .action((x, c) => c.copy(rules = Rules.process(os.read(os.Path(x))))),

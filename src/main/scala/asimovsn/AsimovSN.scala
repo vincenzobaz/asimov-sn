@@ -35,7 +35,6 @@ object AsimovSN:
       case None         => println("failed to parse")
       case Some(config) =>
         println(s"parsed config: $config")
-        TmUtil.getSystemExclusions()
         val exclusions = createExclusionList(config)
 
         config.output match

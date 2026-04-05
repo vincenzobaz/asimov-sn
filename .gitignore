@@ -9,3 +9,4 @@ hs_err_pid*
 .metals
 .vscode
 sbt.json
+**/.DS_Store

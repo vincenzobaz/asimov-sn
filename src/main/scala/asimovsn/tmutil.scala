@@ -29,7 +29,9 @@ object TmUtil:
     val fromSystem = getSystemExclusions()
 
     // Remove paths that are already excluded
-    val newExclusions = exclusions.filter(candidate => fromSystem.exists(current => candidate.startsWith(current)))
+    val newExclusions = exclusions.filter(candidate =>
+      !fromSystem.exists(current => candidate.startsWith(current))
+    )
 
     newExclusions.foreach { p =>
       val command = addExclusionCommand(p)
