@@ -19,7 +19,7 @@ object TmUtil:
     exclusions.map(e => Path.of(e))
 
   def addExclusionCommand(p: Path): os.Shellable =
-    List("tmutil", "addexclusion", p.toAbsolutePath().toString())
+    List("tmutil", "addexclusion", "-p", p.toAbsolutePath().toString())
 
   def removeExclusionCommand(p: Path): os.Shellable =
     List("tmutil", "removeexclusion", p.toAbsolutePath().toString())

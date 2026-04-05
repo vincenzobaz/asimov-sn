@@ -14,7 +14,7 @@ object Config:
         opt[Unit]('d', "dry-run")
           .action((_, c) => c.copy(dryRun = true))
           .text("print exclusions without applying"),
-        opt[Path]('r', "--rules")
+        opt[Path]('r', "rules")
           .text("List of rules")
           .action((x, c) => c.copy(rules = Rules.process(os.read(os.Path(x))))),
         opt[Path]('b', "base-path")
@@ -38,7 +38,7 @@ object Output:
   }
 
 case class Config(
-    dryRun: Boolean = true,
+    dryRun: Boolean = false,
     rules: List[Rule] = Rules.process(
       os.read(os.pwd / "src" / "main" / "resources" / "exclusion_rules.txt")
     ),
