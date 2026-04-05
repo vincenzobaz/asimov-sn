@@ -27,6 +27,11 @@ You can start with [this file](https://github.com/vincenzobaz/asimov-sn/blob/mai
 
 More info on `asimov-sn --help`
 
+# Permissions
+
+ - Add your terminal emulator to Settings > Privacy & Security > Full Disk Access
+ - Run the final command with `sudo`
+
 # Rules
 
 The possible formats for rules are:
